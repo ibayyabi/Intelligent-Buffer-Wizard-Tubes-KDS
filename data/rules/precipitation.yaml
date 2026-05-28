@@ -1,0 +1,47 @@
+rules:
+  - id: PREC_001
+    name: "Calcium Carbonate Precipitation"
+    severity: "high"
+    condition:
+      ions_present: ["Ca2+", "CO32-"]
+    consequence:
+      message: "Calcium and Carbonate ions readily precipitate as Calcium Carbonate (CaCO3, Ksp = 3.36e-9)."
+      action: "Keep concentrations below the solubility limit, reduce pH (to shift carbonate to bicarbonate), or replace calcium with magnesium if applicable."
+
+  - id: PREC_002
+    name: "Calcium Sulfate Precipitation"
+    severity: "medium"
+    condition:
+      ions_present: ["Ca2+", "SO42-"]
+      concentration_product_min: 1.0e-5
+    consequence:
+      message: "Calcium and Sulfate concentrations are high and risk forming Gypsum/Calcium Sulfate precipitate (CaSO4, Ksp = 4.93e-5)."
+      action: "Reduce the concentration of Calcium or Sulfate, or swap Ca2+ for Mg2+ which has a much more soluble sulfate."
+
+  - id: PREC_003
+    name: "Struvite Precipitation"
+    severity: "high"
+    condition:
+      ions_present: ["Mg2+", "NH4+", "PO43-"]
+      ph_min: 7.0
+    consequence:
+      message: "Magnesium, Ammonium, and Phosphate in alkaline conditions tend to form Struvite (MgNH4PO4, Ksp = 3e-13)."
+      action: "Lower the pH below 7.0, reduce concentrations of these ions, or use a non-phosphate buffer."
+
+  - id: PREC_004
+    name: "Silver Chloride Precipitation"
+    severity: "critical"
+    condition:
+      ions_present: ["Ag+", "Cl-"]
+    consequence:
+      message: "Silver and Chloride ions immediately form a highly insoluble precipitate of Silver Chloride (AgCl, Ksp = 1.77e-10)."
+      action: "Never mix silver nitrate (or other silver salts) directly with chloride-containing solutions (e.g. NaCl, KCl, HCl). Use nitrate-based salts instead of chlorides or use non-chloride buffers."
+
+  - id: PREC_005
+    name: "Barium Sulfate Precipitation"
+    severity: "critical"
+    condition:
+      ions_present: ["Ba2+", "SO42-"]
+    consequence:
+      message: "Barium and Sulfate ions immediately precipitate as Barium Sulfate (BaSO4, Ksp = 1.08e-10)."
+      action: "Avoid mixing barium salts with sulfates. Use chloride or nitrate salts of other cations, or acetate buffers."

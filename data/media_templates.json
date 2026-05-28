@@ -1,0 +1,116 @@
+{
+  "templates": [
+    {
+      "name": "PBS (Phosphate Buffered Saline)",
+      "target_ph": 7.4,
+      "buffer_name": "Phosphate",
+      "buffer_concentration": 0.01,
+      "salts": {
+        "NaCl": 0.137,
+        "KCl": 0.0027
+      }
+    },
+    {
+      "name": "DPBS (Dulbecco's PBS)",
+      "target_ph": 7.4,
+      "buffer_name": "Phosphate",
+      "buffer_concentration": 0.0081,
+      "salts": {
+        "NaCl": 0.1379,
+        "KCl": 0.0027,
+        "KH2PO4": 0.00147,
+        "CaCl2": 0.0009,
+        "MgCl2": 0.0005
+      }
+    },
+    {
+      "name": "TBS (Tris-Buffered Saline)",
+      "target_ph": 7.6,
+      "buffer_name": "Tris",
+      "buffer_concentration": 0.05,
+      "salts": {
+        "NaCl": 0.150
+      }
+    },
+    {
+      "name": "TAE (Tris-Acetate-EDTA, 1x)",
+      "target_ph": 8.0,
+      "buffer_name": "Tris",
+      "buffer_concentration": 0.04,
+      "salts": {
+        "Acetate": 0.04,
+        "EDTA": 0.001
+      }
+    },
+    {
+      "name": "TBE (Tris-Borate-EDTA, 1x)",
+      "target_ph": 8.3,
+      "buffer_name": "Tris",
+      "buffer_concentration": 0.089,
+      "salts": {
+        "Borate": 0.089,
+        "EDTA": 0.002
+      }
+    },
+    {
+      "name": "HBSS (Hanks' Balanced Salt Solution)",
+      "target_ph": 7.4,
+      "buffer_name": "Bicarbonate",
+      "buffer_concentration": 0.0042,
+      "salts": {
+        "NaCl": 0.1379,
+        "KCl": 0.0053,
+        "CaCl2": 0.0013,
+        "MgSO4": 0.0008,
+        "Na2HPO4": 0.00034,
+        "KH2PO4": 0.00044,
+        "Glucose": 0.0056
+      }
+    },
+    {
+      "name": "EBSS (Earle's Balanced Salt Solution)",
+      "target_ph": 7.4,
+      "buffer_name": "Bicarbonate",
+      "buffer_concentration": 0.026,
+      "salts": {
+        "NaCl": 0.117,
+        "KCl": 0.0053,
+        "CaCl2": 0.0018,
+        "MgSO4": 0.0008,
+        "NaH2PO4": 0.0010,
+        "Glucose": 0.0055
+      }
+    },
+    {
+      "name": "DMEM (Dulbecco's Modified Eagle Medium)",
+      "target_ph": 7.4,
+      "buffer_name": "Bicarbonate",
+      "buffer_concentration": 0.044,
+      "salts": {
+        "NaCl": 0.110,
+        "KCl": 0.0053,
+        "CaCl2": 0.0018,
+        "MgSO4": 0.0008,
+        "NaH2PO4": 0.0009,
+        "Fe(NO3)3": 0.00000025,
+        "Glucose": 0.025,
+        "Glutamine": 0.004
+      }
+    },
+    {
+      "name": "RPMI-1640 Medium",
+      "target_ph": 7.4,
+      "buffer_name": "Bicarbonate",
+      "buffer_concentration": 0.0238,
+      "salts": {
+        "NaCl": 0.102,
+        "KCl": 0.0053,
+        "Ca(NO3)2": 0.00042,
+        "MgSO4": 0.0004,
+        "Na2HPO4": 0.0056,
+        "Glucose": 0.011,
+        "Glutamine": 0.002
+      }
+    }
+  ]
+}

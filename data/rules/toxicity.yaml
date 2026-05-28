@@ -1,0 +1,40 @@
+rules:
+  - id: TOX_001
+    name: "Cacodylate Arsenic Toxicity"
+    severity: "critical"
+    condition:
+      buffer_type: "Cacodylate"
+    consequence:
+      message: "Cacodylate buffer contains arsenic (dimethylarsinate) which is highly toxic, carcinogenic, and mutagenic."
+      action: "Handle with extreme care using gloves and a fume hood. Dispose of as hazardous arsenic waste. Consider replacing with MES or PIPES if biocompatibility is required."
+
+  - id: TOX_002
+    name: "Borate Biocompatibility Restriction"
+    severity: "high"
+    condition:
+      buffer_type: "Borate"
+      application: "cell_culture"
+    consequence:
+      message: "Borate is toxic to most mammalian cells and plants. It also binds to cis-diols (like carbohydrates, glycoproteins, RNA), disrupting biological functions."
+      action: "Do not use Borate for live cell culture or physiological experiments. Replace with HEPES, Tris, or Phosphate buffer."
+
+  - id: TOX_003
+    name: "HEPES Phototoxicity"
+    severity: "medium"
+    condition:
+      buffer_type: "HEPES"
+      exposure: "light"
+    consequence:
+      message: "HEPES buffer produces hydrogen peroxide (H2O2) and other reactive oxygen species (ROS) when exposed to ambient fluorescent light or sunlight, leading to cell toxicity."
+      action: "Keep HEPES-buffered media in the dark or wrap bottles in aluminum foil. Avoid prolonged exposure to light during cell handling."
+
+  - id: TOX_004
+    name: "Tris Cell Toxicity"
+    severity: "medium"
+    condition:
+      buffer_type: "Tris"
+      concentration_gt: 0.05
+      application: "cell_culture"
+    consequence:
+      message: "Tris buffer at concentrations exceeding 50 mM is toxic to many mammalian cell types and can cause cell membrane damage."
+      action: "Keep Tris concentration below 20 mM in cell cultures, or use a zwitterionic buffer like HEPES or MOPS which are much better tolerated."

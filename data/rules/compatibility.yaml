@@ -1,0 +1,41 @@
+rules:
+  - id: COMP_001
+    name: "Phosphate-Calcium/Magnesium Compatibility"
+    severity: "high"
+    condition:
+      buffer_type: "Phosphate"
+      ions_present: ["Ca2+", "Mg2+"]
+      ph_min: 6.0
+    consequence:
+      message: "Phosphate ions form highly insoluble precipitates with Calcium (Ca2+) and Magnesium (Mg2+) at pH above 6.0."
+      action: "Consider using HEPES or Tris buffer, or prepare calcium/magnesium stock solutions separately and dilute immediately before use."
+
+  - id: COMP_002
+    name: "Bicarbonate Open System Volatility"
+    severity: "medium"
+    condition:
+      buffer_type: "Bicarbonate"
+      environment: "open"
+    consequence:
+      message: "Bicarbonate buffers are in equilibrium with gaseous CO2. In an open environment, CO2 outgassing will occur, causing the pH to drift upward."
+      action: "Use Bicarbonate buffers in a closed system (e.g., cell culture incubator with 5-10% CO2 atmosphere) or adjust target pH accordingly."
+
+  - id: COMP_003
+    name: "Tris-Copper Interaction"
+    severity: "medium"
+    condition:
+      buffer_type: "Tris"
+      ions_present: ["Cu2+"]
+    consequence:
+      message: "Tris forms stable coordination complexes with Copper (Cu2+) ions, giving a blue color and potentially altering the free concentration of copper."
+      action: "Avoid using Tris if copper-dependent enzymes or assays (such as BCA assay) are being used; use HEPES or MES instead."
+
+  - id: COMP_004
+    name: "Citrate Chelation Risk"
+    severity: "medium"
+    condition:
+      buffer_type: "Citrate"
+      ions_present: ["Ca2+", "Mg2+", "Fe3+"]
+    consequence:
+      message: "Citrate is a strong chelator of divalent and trivalent cations, which can dramatically lower the free metal ion activity."
+      action: "Be aware that free Ca2+ and Mg2+ concentrations will be significantly lower than analytical values. If free ions are required, choose a non-chelating buffer like HEPES or PIPES."

@@ -1,0 +1,112 @@
+{
+  "buffers": [
+    {
+      "name": "Phosphate",
+      "pKa": [2.15, 7.20, 12.35],
+      "acid_charge": 0,
+      "formula": "H3PO4",
+      "mw": 98.0,
+      "range": [5.8, 8.0],
+      "notes": "Very common biological buffer. Incompatible with calcium and magnesium due to high precipitation risk."
+    },
+    {
+      "name": "Acetate",
+      "pKa": [4.76],
+      "acid_charge": 0,
+      "formula": "CH3COOH",
+      "mw": 60.05,
+      "range": [3.7, 5.6],
+      "notes": "Used widely in biochemistry and molecular biology, volatile at high temperatures."
+    },
+    {
+      "name": "Tris",
+      "pKa": [8.06],
+      "acid_charge": 1,
+      "formula": "C4H11NO3",
+      "mw": 121.14,
+      "range": [7.0, 9.0],
+      "notes": "Highly temperature dependent (dpKa/dT ~ -0.028/C). Toxic to some cells at high concentrations. Reacts with copper."
+    },
+    {
+      "name": "HEPES",
+      "pKa": [7.55],
+      "acid_charge": 0,
+      "formula": "C8H18N2O4S",
+      "mw": 238.3,
+      "range": [6.8, 8.2],
+      "notes": "Zwitterionic buffer. Excellent for cell culture. Phototoxic when exposed to ambient light due to H2O2 generation."
+    },
+    {
+      "name": "Bicarbonate",
+      "pKa": [6.35, 10.33],
+      "acid_charge": 0,
+      "formula": "H2CO3",
+      "mw": 62.03,
+      "range": [6.0, 8.0],
+      "notes": "Key physiological buffer. Undergoes CO2 outgassing in open systems, causing pH drift."
+    },
+    {
+      "name": "Citrate",
+      "pKa": [3.13, 4.76, 6.40],
+      "acid_charge": 0,
+      "formula": "C6H8O7",
+      "mw": 192.12,
+      "range": [3.0, 6.2],
+      "notes": "Chelates divalent cations (Ca2+, Mg2+). Useful for antigen retrieval and metal binding."
+    },
+    {
+      "name": "Glycine",
+      "pKa": [2.35, 9.78],
+      "acid_charge": 1,
+      "formula": "C2H5NO2",
+      "mw": 75.07,
+      "range": [8.2, 10.6],
+      "notes": "Used in electrophoresis running buffers. Amino acid buffer."
+    },
+    {
+      "name": "MES",
+      "pKa": [6.10],
+      "acid_charge": 0,
+      "formula": "C6H13NO4S",
+      "mw": 195.2,
+      "range": [5.5, 6.7],
+      "notes": "Zwitterionic morpholinic buffer. Good for plant and bacterial culture."
+    },
+    {
+      "name": "MOPS",
+      "pKa": [7.20],
+      "acid_charge": 0,
+      "formula": "C7H15NO4S",
+      "mw": 209.3,
+      "range": [6.5, 7.9],
+      "notes": "Similar to HEPES, morpholinic buffer. Used in RNA gel electrophoresis."
+    },
+    {
+      "name": "Borate",
+      "pKa": [9.23],
+      "acid_charge": 0,
+      "formula": "H3BO3",
+      "mw": 61.83,
+      "range": [8.0, 10.0],
+      "notes": "Toxic to plants and living cell culture. Forms complexes with cis-diols (e.g. carbohydrates)."
+    },
+    {
+      "name": "Cacodylate",
+      "pKa": [6.27],
+      "acid_charge": 0,
+      "formula": "C2H7AsO2",
+      "mw": 138.0,
+      "range": [5.0, 7.4],
+      "notes": "Contains arsenic. Highly toxic by inhalation/ingestion. Strict disposal protocols required."
+    },
+    {
+      "name": "PIPES",
+      "pKa": [6.80],
+      "acid_charge": -1,
+      "formula": "C8H18N2O6S2",
+      "mw": 302.37,
+      "range": [6.1, 7.5],
+      "notes": "Piperazine zwitterionic buffer. Charge starting at -1 because first sulfonate (pKa ~2) is fully ionized at working pH."
+    }
+  ]
+}

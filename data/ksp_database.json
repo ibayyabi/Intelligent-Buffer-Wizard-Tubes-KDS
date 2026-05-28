@@ -1,0 +1,158 @@
+{
+  "salts": [
+    {
+      "name": "Calcium Phosphate",
+      "formula": "Ca3(PO4)2",
+      "ksp": 2.07e-33,
+      "ions": [
+        {"name": "Ca2+", "charge": 2, "stoich": 3},
+        {"name": "PO43-", "charge": -3, "stoich": 2}
+      ]
+    },
+    {
+      "name": "Calcium Hydrogen Phosphate",
+      "formula": "CaHPO4",
+      "ksp": 1e-7,
+      "ions": [
+        {"name": "Ca2+", "charge": 2, "stoich": 1},
+        {"name": "HPO42-", "charge": -2, "stoich": 1}
+      ]
+    },
+    {
+      "name": "Calcium Carbonate",
+      "formula": "CaCO3",
+      "ksp": 3.36e-9,
+      "ions": [
+        {"name": "Ca2+", "charge": 2, "stoich": 1},
+        {"name": "CO32-", "charge": -2, "stoich": 1}
+      ]
+    },
+    {
+      "name": "Calcium Sulfate",
+      "formula": "CaSO4",
+      "ksp": 4.93e-5,
+      "ions": [
+        {"name": "Ca2+", "charge": 2, "stoich": 1},
+        {"name": "SO42-", "charge": -2, "stoich": 1}
+      ]
+    },
+    {
+      "name": "Calcium Hydroxide",
+      "formula": "Ca(OH)2",
+      "ksp": 5.5e-6,
+      "ions": [
+        {"name": "Ca2+", "charge": 2, "stoich": 1},
+        {"name": "OH-", "charge": -1, "stoich": 2}
+      ]
+    },
+    {
+      "name": "Magnesium Phosphate",
+      "formula": "Mg3(PO4)2",
+      "ksp": 1.04e-24,
+      "ions": [
+        {"name": "Mg2+", "charge": 2, "stoich": 3},
+        {"name": "PO43-", "charge": -3, "stoich": 2}
+      ]
+    },
+    {
+      "name": "Magnesium Carbonate",
+      "formula": "MgCO3",
+      "ksp": 6.82e-6,
+      "ions": [
+        {"name": "Mg2+", "charge": 2, "stoich": 1},
+        {"name": "CO32-", "charge": -2, "stoich": 1}
+      ]
+    },
+    {
+      "name": "Magnesium Hydroxide",
+      "formula": "Mg(OH)2",
+      "ksp": 5.61e-12,
+      "ions": [
+        {"name": "Mg2+", "charge": 2, "stoich": 1},
+        {"name": "OH-", "charge": -1, "stoich": 2}
+      ]
+    },
+    {
+      "name": "Struvite",
+      "formula": "MgNH4PO4",
+      "ksp": 3.0e-13,
+      "ions": [
+        {"name": "Mg2+", "charge": 2, "stoich": 1},
+        {"name": "NH4+", "charge": 1, "stoich": 1},
+        {"name": "PO43-", "charge": -3, "stoich": 1}
+      ]
+    },
+    {
+      "name": "Barium Sulfate",
+      "formula": "BaSO4",
+      "ksp": 1.08e-10,
+      "ions": [
+        {"name": "Ba2+", "charge": 2, "stoich": 1},
+        {"name": "SO42-", "charge": -2, "stoich": 1}
+      ]
+    },
+    {
+      "name": "Barium Carbonate",
+      "formula": "BaCO3",
+      "ksp": 2.58e-9,
+      "ions": [
+        {"name": "Ba2+", "charge": 2, "stoich": 1},
+        {"name": "CO32-", "charge": -2, "stoich": 1}
+      ]
+    },
+    {
+      "name": "Silver Chloride",
+      "formula": "AgCl",
+      "ksp": 1.77e-10,
+      "ions": [
+        {"name": "Ag+", "charge": 1, "stoich": 1},
+        {"name": "Cl-", "charge": -1, "stoich": 1}
+      ]
+    },
+    {
+      "name": "Zinc Hydroxide",
+      "formula": "Zn(OH)2",
+      "ksp": 3.0e-17,
+      "ions": [
+        {"name": "Zn2+", "charge": 2, "stoich": 1},
+        {"name": "OH-", "charge": -1, "stoich": 2}
+      ]
+    },
+    {
+      "name": "Zinc Phosphate",
+      "formula": "Zn3(PO4)2",
+      "ksp": 9.0e-33,
+      "ions": [
+        {"name": "Zn2+", "charge": 2, "stoich": 3},
+        {"name": "PO43-", "charge": -3, "stoich": 2}
+      ]
+    },
+    {
+      "name": "Iron(II) Hydroxide",
+      "formula": "Fe(OH)2",
+      "ksp": 4.87e-17,
+      "ions": [
+        {"name": "Fe2+", "charge": 2, "stoich": 1},
+        {"name": "OH-", "charge": -1, "stoich": 2}
+      ]
+    },
+    {
+      "name": "Iron(III) Hydroxide",
+      "formula": "Fe(OH)3",
+      "ksp": 2.79e-39,
+      "ions": [
+        {"name": "Fe3+", "charge": 3, "stoich": 1},
+        {"name": "OH-", "charge": -1, "stoich": 3}
+      ]
+    },
+    {
+      "name": "Iron(III) Phosphate",
+      "formula": "FePO4",
+      "ksp": 1.3e-22,
+      "ions": [
+        {"name": "Fe3+", "charge": 3, "stoich": 1},
+        {"name": "PO43-", "charge": -3, "stoich": 1}
+      ]
+    }
+  ]
+}
