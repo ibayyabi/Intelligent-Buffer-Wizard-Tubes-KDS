@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligent Buffer Wizard Dashboard</title>
+    
+    <!-- Custom Bespoke Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Plotly.js for premium dynamic charts -->
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    
+    <!-- Link to external stylesheet -->
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">Intelligent Buffer Wizard</div>
+        <div><span class="badge badge-safe">CHEM-SPECIATION PLATFORM</span></div>
+    </nav>
+
+    <div class="main-container">
+        <!-- Sidebar Form Parameters -->
+        <div class="panel sidebar">
+            <h2>Parameters</h2>
+            <form id="formulation-form" onsubmit="event.preventDefault(); formulate();" style="margin-top: 24px;">
+                <div class="form-group">
+                    <label for="buffer_name">Buffer System</label>
+                    <select id="buffer_name" onchange="adjustPhRange()"></select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="target_ph">Target pH</label>
+                    <input type="number" id="target_ph" step="0.01" value="7.40">
+                    <span id="ph-range-help" style="font-size:0.75rem; color:var(--text-secondary); display:block; margin-top:6px;"></span>
+                </div>
+
+                <div class="flex-row">
+                    <div class="form-group">
+                        <label for="concentration">Total Conc (M)</label>
+                        <input type="number" id="concentration" step="0.001" value="0.050">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="temperature_c">Temp (°C)</label>
+                        <input type="number" id="temperature_c" step="0.1" value="25.0">
+                    </div>
+                </div>
+
+                <div class="flex-row">
+                    <div class="form-group">
+                        <label for="environment">System type</label>
+                        <select id="environment">
+                            <option value="closed">Closed (Inert)</option>
+                            <option value="open">Open (pCO2)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exposure">Exposure</label>
+                        <select id="exposure">
+                            <option value="dark">Dark</option>
+                            <option value="light">Ambient Light</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="application">Application Context</label>
+                    <select id="application">
+                        <option value="biochemistry">Biochemistry Assay</option>
+                        <option value="cell_culture">Cell Culture</option>
+                        <option value="gel_electrophoresis">Gel Electrophoresis</option>
+                    </select>
+                </div>
+
+                <!-- Added Salts Section -->
+                <div class="form-group">
+                    <label>Added Salts (Ionic Strength)</label>
+                    <div class="salts-wrapper" id="salts-wrapper">
+                        <!-- Dynamic salt entries will be injected here -->
+                    </div>
+                    <button type="button" class="btn-secondary" onclick="addSaltRow()">+ Add Salt Compound</button>
+                </div>
+
+                <button type="submit" class="btn">Solve Formulation</button>
+            </form>
+        </div>
+
+        <!-- Main Output Deck -->
+        <div class="panel">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('recipe')">📋 Preparation Protocols</button>
+                <button class="tab-btn" onclick="switchTab('chemistry')">🧪 Chemical Speciation</button>
+                <button class="tab-btn" onclick="switchTab('charts')">📊 Simulation Plots</button>
+                <button class="tab-btn" onclick="switchTab('safety')">⚠️ Expert Diagnostics</button>
+                <button class="tab-btn" onclick="switchTab('recommendations')">🤖 AI Media Similarity</button>
+            </div>
+
+            <!-- Quick Summary Metrics Bar -->
+            <div class="metrics-row">
+                <div class="metric-card">
+                    <div class="metric-label">Ionic Strength (I)</div>
+                    <div class="metric-value" id="res-ionic-strength">-</div>
+                </div>
+                <div class="metric-card teal">
+                    <div class="metric-label">Buffer Capacity (β)</div>
+                    <div class="metric-value" id="res-capacity">-</div>
+                </div>
+                <div class="metric-card mint">
+                    <div class="metric-label">Safety Rating</div>
+                    <div class="metric-value" id="res-risk" style="font-size: 1.5rem; line-height: 1.3;">-</div>
+                </div>
+            </div>
+
+            <!-- Tab Pane: Recipe Protocols -->
+            <div class="tab-pane active" id="tab-recipe">
+                <div id="recipe-container">
+                    <p style="color:var(--text-secondary);">Submit formulation parameters to solve mathematical equilibria and compile laboratory preparation recipes.</p>
+                </div>
+            </div>
+
+            <!-- Tab Pane: Chemical Speciation -->
+            <div class="tab-pane" id="tab-chemistry">
+                <h2>Buffer Speciation Distribution</h2>
+                <p style="color:var(--text-secondary); margin-bottom: 20px;">Calculated concentrations of specific buffer species at exact converged ionic strength activity corrections.</p>
+                <table id="speciation-table">
+                    <thead>
+                        <tr>
+                            <th>Species Name</th>
+                            <th>Charge</th>
+                            <th>Concentration (M)</th>
+                            <th>Fraction (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="speciation-tbody">
+                        <tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">No active solver state available.</td></tr>
+                    </tbody>
+                </table>
+
+                <h2 style="margin-top:40px;">Activity Coefficients (&gamma;)</h2>
+                <p style="color:var(--text-secondary); margin-bottom: 20px;">Ion activity values calculated using the Davies Equation based on charge magnitude.</p>
+                <table id="activity-table" style="max-width: 500px;">
+                    <thead>
+                        <tr>
+                            <th>Ionic Charge Magnitude</th>
+                            <th>Activity Coefficient (&gamma;)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="activity-tbody">
+                        <tr><td colspan="2" style="text-align:center; color:var(--text-secondary);">No active solver state available.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Tab Pane: Simulation Charts -->
+            <div class="tab-pane" id="tab-charts">
+                <div class="charts-grid">
+                    <div class="chart-box" id="titration-plot"></div>
+                    <div class="chart-box" id="speciation-plot"></div>
+                    <div class="chart-box" id="heatmap-plot"></div>
+                </div>
+            </div>
+
+            <!-- Tab Pane: Expert Diagnostics & Safety -->
+            <div class="tab-pane" id="tab-safety">
+                <h2>Precipitation Saturation Checks (Ksp Database)</h2>
+                <p style="color:var(--text-secondary); margin-bottom: 20px;">Simultaneous ionic product checks against saturation indexes to predict precipitate scaling.</p>
+                <table id="precipitation-table" style="margin-bottom: 40px;">
+                    <thead>
+                        <tr>
+                            <th>Salt Compound</th>
+                            <th>Formula</th>
+                            <th>Saturation Index (SI)</th>
+                            <th>Risk Assessment</th>
+                            <th>Nucleation Estimate</th>
+                        </tr>
+                    </thead>
+                    <tbody id="precipitation-tbody">
+                        <tr><td colspan="5" style="text-align:center; color:var(--text-secondary);">No solubility risks calculated yet.</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Expert Diagnostic Warnings</h2>
+                <p style="color:var(--text-secondary); margin-bottom: 20px;">Inference rules examining chemical safety, buffer-ion compatibility, and biological toxicity.</p>
+                <div id="diagnostics-container">
+                    <p style="color:var(--text-secondary);">No warnings triggered.</p>
+                </div>
+            </div>
+
+            <!-- Tab Pane: AI Template Similarity -->
+            <div class="tab-pane" id="tab-recommendations">
+                <h2>AI Reference Media Recommendation</h2>
+                <p style="color:var(--text-secondary); margin-bottom: 20px;">Cosine similarity scores mapping your formulation components against standard cell culture and biochemical media templates.</p>
+                <table id="recommender-table">
+                    <thead>
+                        <tr>
+                            <th>Standard Reference Media</th>
+                            <th>Similarity Index</th>
+                            <th>Reference Buffer System</th>
+                            <th>Reference Salts Concentration</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recommender-tbody">
+                        <tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">Submit formulation to query recommended templates.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let bufferCatalog = [];
+        
+        async function init() {
+            try {
+                const response = await fetch("/api/buffers");
+                bufferCatalog = await response.json();
+                
+                const select = document.getElementById("buffer_name");
+                select.innerHTML = "";
+                bufferCatalog.forEach(b => {
+                    const opt = document.createElement("option");
+                    opt.value = b.name;
+                    opt.innerText = b.name;
+                    select.appendChild(opt);
+                });
+                
+                adjustPhRange();
+            } catch (err) {
+                console.error("Initialization failed: ", err);
+            }
+        }
+
+        function adjustPhRange() {
+            const select = document.getElementById("buffer_name");
+            const selectedName = select.value;
+            const buf = bufferCatalog.find(b => b.name === selectedName);
+            if (buf) {
+                const help = document.getElementById("ph-range-help");
+                help.innerText = `Buffering Limit: pH ${buf.range[0].toFixed(1)} - ${buf.range[1].toFixed(1)}`;
+                
+                const targetPh = document.getElementById("target_ph");
+                const avgPh = buf.pKa.reduce((a,b) => a+b, 0) / buf.pKa.length;
+                targetPh.value = avgPh.toFixed(2);
+            }
+        }
+
+        function addSaltRow() {
+            const wrapper = document.getElementById("salts-wrapper");
+            const row = document.createElement("div");
+            row.className = "salt-row";
+            row.innerHTML = `
+                <select class="salt-name-select" style="flex: 2;">
+                    <option value="NaCl">NaCl</option>
+                    <option value="KCl">KCl</option>
+                    <option value="CaCl2">CaCl2</option>
+                    <option value="MgCl2">MgCl2</option>
+                    <option value="MgSO4">MgSO4</option>
+                </select>
+                <input type="number" class="salt-conc-input" step="0.0001" value="0.0050" style="flex: 2;">
+                <button type="button" class="btn-delete" onclick="this.parentElement.remove()">×</button>
+            `;
+            wrapper.appendChild(row);
+        }
+
+        function switchTab(tabId) {
+            const tabs = document.querySelectorAll(".tab-btn");
+            const panes = document.querySelectorAll(".tab-pane");
+            
+            tabs.forEach(btn => {
+                btn.classList.remove("active");
+                if (btn.innerText.toLowerCase().includes(tabId)) {
+                    btn.classList.add("active");
+                }
+            });
+            
+            panes.forEach(pane => {
+                pane.classList.remove("active");
+                if (pane.id === `tab-${tabId}`) {
+                    pane.classList.add("active");
+                }
+            });
+        }
+
+        async function formulate() {
+            const buffer_name = document.getElementById("buffer_name").value;
+            const target_ph = parseFloat(document.getElementById("target_ph").value);
+            const concentration = parseFloat(document.getElementById("concentration").value);
+            const temperature_c = parseFloat(document.getElementById("temperature_c").value);
+            const environment = document.getElementById("environment").value;
+            const exposure = document.getElementById("exposure").value;
+            const application = document.getElementById("application").value;
+            
+            const saltRows = document.querySelectorAll(".salt-row");
+            const added_salts = [];
+            saltRows.forEach(row => {
+                const name = row.querySelector(".salt-name-select").value;
+                const concentration = parseFloat(row.querySelector(".salt-conc-input").value);
+                added_salts.push({ name, concentration });
+            });
+            
+            const payload = {
+                buffer_name,
+                target_ph,
+                concentration,
+                temperature_c,
+                added_salts,
+                environment,
+                application,
+                exposure
+            };
+            
+            try {
+                const response = await fetch("/api/formulate", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    const err = await response.json();
+                    alert(`Solver Error: ${err.detail}`);
+                    return;
+                }
+                
+                const res = await response.json();
+                displayResults(res);
+            } catch (err) {
+                alert(`Network error: ${err}`);
+            }
+        }
+
+        function displayResults(res) {
+            document.getElementById("res-ionic-strength").innerText = `${res.ionic_strength.toFixed(4)} M`;
+            document.getElementById("res-capacity").innerText = res.buffer_capacity.toFixed(4);
+            
+            const riskBadge = document.getElementById("res-risk");
+            riskBadge.innerText = `${res.overall_risk_score.toFixed(1)}% (${res.overall_risk_level.toUpperCase()})`;
+            
+            if (res.overall_risk_level === 'Safe') riskBadge.style.color = 'var(--risk-safe)';
+            else if (res.overall_risk_level === 'Warning') riskBadge.style.color = 'var(--risk-warning)';
+            else if (res.overall_risk_level === 'Risk') riskBadge.style.color = 'var(--risk-danger)';
+            else riskBadge.style.color = 'var(--risk-critical)';
+            
+            // Recipes
+            const recCont = document.getElementById("recipe-container");
+            recCont.innerHTML = "";
+            
+            if (res.direct_mix_recipe) {
+                recCont.innerHTML += `
+                    <div class="recipe-block">
+                        <div class="recipe-title">🧪 Method A: Direct Salt Mixture (Optimal)</div>
+                        <pre>${res.direct_mix_recipe.recipe_text}</pre>
+                        <ul class="recipe-list">
+                            <li>Mass requirement of <strong>${res.direct_mix_recipe.salt_a_name}</strong>: ${res.direct_mix_recipe.salt_a_mass_g_per_l.toFixed(4)} g/L</li>
+                            <li>Mass requirement of <strong>${res.direct_mix_recipe.salt_b_name}</strong>: ${res.direct_mix_recipe.salt_b_mass_g_per_l.toFixed(4)} g/L</li>
+                        </ul>
+                    </div>
+                `;
+            }
+            if (res.titration_recipe) {
+                recCont.innerHTML += `
+                    <div class="recipe-block">
+                        <div class="recipe-title">🧪 Method B: Standard pH Titration</div>
+                        <pre>${res.titration_recipe.recipe_instruction}</pre>
+                        <ul class="recipe-list">
+                            <li>Required titrant chemical: <strong>${res.titration_recipe.chemical}</strong></li>
+                            <li>Active solution molar loading: ${res.titration_recipe.moles_per_l.toFixed(4)} moles/L</li>
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            // Speciation table
+            const specBody = document.getElementById("speciation-tbody");
+            specBody.innerHTML = "";
+            res.species_concentrations.forEach(s => {
+                specBody.innerHTML += `
+                    <tr>
+                        <td style="font-weight:600; color:#ffffff;">${s.name}</td>
+                        <td><code>${s.charge > 0 ? '+' + s.charge : s.charge}</code></td>
+                        <td>${s.concentration.toFixed(6)} M</td>
+                        <td>${(s.fraction * 100).toFixed(2)}%</td>
+                    </tr>
+                `;
+            });
+            
+            // Activity table
+            const actBody = document.getElementById("activity-tbody");
+            actBody.innerHTML = "";
+            Object.entries(res.activity_coefficients).sort().forEach(([charge, val]) => {
+                actBody.innerHTML += `
+                    <tr>
+                        <td>Charge magnitude ±${charge}</td>
+                        <td style="font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--accent-copper);">${val.toFixed(4)}</td>
+                    </tr>
+                `;
+            });
+            
+            // Precipitation table
+            const precBody = document.getElementById("precipitation-tbody");
+            precBody.innerHTML = "";
+            if (res.precipitation_risks.length === 0) {
+                precBody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px; color:var(--risk-safe);">✓ No ionic precipitation risk detected in current solvent environment.</td></tr>`;
+            } else {
+                res.precipitation_risks.forEach(p => {
+                    const badgeClass = `badge-${p.risk_level.toLowerCase()}`;
+                    precBody.innerHTML += `
+                        <tr>
+                            <td style="font-weight:600;">${p.salt_name}</td>
+                            <td><code>${p.formula}</code></td>
+                            <td style="font-family:'JetBrains Mono'; font-weight:600;">${p.saturation_index.toFixed(4)}</td>
+                            <td><span class="badge ${badgeClass}">${p.risk_level}</span></td>
+                            <td>${p.induction_time}</td>
+                        </tr>
+                    `;
+                });
+            }
+            
+            // Expert rules
+            const ruleCont = document.getElementById("diagnostics-container");
+            ruleCont.innerHTML = "";
+            if (res.rule_findings.length === 0) {
+                ruleCont.innerHTML = `<div class="warning-strip low" style="color:var(--risk-safe); font-weight:600;">✓ Formulation is fully compliant. No compatibility warnings triggered.</div>`;
+            } else {
+                res.rule_findings.forEach(rf => {
+                    const sev = rf.severity.toLowerCase();
+                    ruleCont.innerHTML += `
+                        <div class="warning-strip ${sev}">
+                            <div class="warning-header">
+                                <div class="warning-title">${rf.rule_name}</div>
+                                <span class="badge badge-${sev}">${rf.severity}</span>
+                            </div>
+                            <div class="warning-desc"><strong>Conflict:</strong> ${rf.message}</div>
+                            <div class="warning-action"><strong>Remedy:</strong> ${rf.action}</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            fetchRecommendations(res.input_params);
+            renderCharts(res);
+        }
+
+        async function fetchRecommendations(inputs) {
+            try {
+                const response = await fetch("/api/templates");
+                const templates = await response.json();
+                
+                const recBody = document.getElementById("recommender-tbody");
+                recBody.innerHTML = "";
+                
+                const recs = [];
+                for (let t of templates) {
+                    let phSim = Math.exp(-Math.abs(inputs.target_ph - t.target_ph));
+                    let bufSim = inputs.buffer_name.toLowerCase() === t.buffer_name.toLowerCase() ? 1.0 : 0.0;
+                    let similarity = (0.5 * phSim) + (0.5 * bufSim);
+                    recs.push({ t, score: similarity });
+                }
+                
+                recs.sort((a,b) => b.score - a.score);
+                
+                recs.slice(0, 4).forEach(item => {
+                    const saltsStr = Object.entries(item.t.salts).map(([k,v]) => `${k}: ${v}M`).join(", ");
+                    recBody.innerHTML += `
+                        <tr>
+                            <td style="font-weight:600; color:#ffffff;">${item.t.name}</td>
+                            <td style="font-weight:700; color:var(--accent-copper);">${(item.score * 100).toFixed(1)}% match</td>
+                            <td>${item.t.buffer_name} (pH ${item.t.target_ph})</td>
+                            <td style="font-size:0.85rem; color:var(--text-secondary);">${saltsStr}</td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                console.error("Failed similarity fetch: ", err);
+            }
+        }
+
+        function renderCharts(res) {
+            const targetPh = res.input_params.target_ph;
+            const phs = [];
+            const betas = [];
+            
+            for (let ph = targetPh - 1.5; ph <= targetPh + 1.5; ph += 0.05) {
+                phs.push(ph);
+                const H = Math.pow(10, -ph);
+                let bSum = H + (1e-14/H);
+                res.species_concentrations.forEach(spec => {
+                    const c = res.input_params.concentration;
+                    const Ka = Math.pow(10, -targetPh);
+                    bSum += c * (Ka * H) / Math.pow(Ka + H, 2);
+                });
+                betas.push(2.303 * bSum);
+            }
+            
+            const trace1 = {
+                x: phs,
+                y: betas,
+                type: 'scatter',
+                mode: 'lines',
+                name: 'Buffer Capacity (β)',
+                line: { color: '#d9925e', width: 3 },
+                fill: 'tozeroy',
+                fillcolor: 'rgba(217, 146, 94, 0.08)'
+            };
+            
+            const layout1 = {
+                title: 'pH vs Buffer Capacity (β)',
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                font: { color: '#f8fafc', family: 'Space Grotesk' },
+                xaxis: { title: 'pH', gridcolor: 'rgba(255,255,255,0.03)' },
+                yaxis: { title: 'Capacity (Beta)', gridcolor: 'rgba(255,255,255,0.03)' },
+                margin: { t: 40, b: 40, l: 50, r: 20 }
+            };
+            
+            Plotly.newPlot('titration-plot', [trace1], layout1);
+            
+            const speciesNames = res.species_concentrations.map(s => s.name);
+            const speciesFracs = res.species_concentrations.map(s => s.fraction * 100);
+            
+            const trace2 = {
+                x: speciesNames,
+                y: speciesFracs,
+                type: 'bar',
+                marker: {
+                    color: ['#d9925e', '#00f2fe', '#05f3ad', '#2563eb', '#ec4899']
+                }
+            };
+            
+            const layout2 = {
+                title: 'Chemical Species Distribution (%)',
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                font: { color: '#f8fafc', family: 'Space Grotesk' },
+                xaxis: { gridcolor: 'rgba(255,255,255,0.03)' },
+                yaxis: { title: 'Fraction (%)', range: [0, 100], gridcolor: 'rgba(255,255,255,0.03)' },
+                margin: { t: 40, b: 40, l: 50, r: 20 }
+            };
+            
+            Plotly.newPlot('speciation-plot', [trace2], layout2);
+            
+            const saltLabels = res.precipitation_risks.map(p => p.formula);
+            const sis = res.precipitation_risks.map(p => p.saturation_index);
+            
+            if (saltLabels.length === 0) {
+                document.getElementById('heatmap-plot').innerHTML = "<p style='text-align:center; padding-top:100px; color:var(--text-secondary);'>No ion combinations to display risk heatmap</p>";
+                return;
+            }
+            
+            const trace3 = {
+                x: saltLabels,
+                y: ['Saturation Index'],
+                z: [sis],
+                type: 'heatmap',
+                colorscale: [
+                    [0.0, '#10b981'],
+                    [0.45, '#10b981'],
+                    [0.5, '#f59e0b'],
+                    [0.6, '#ef4444'],
+                    [1.0, '#ec4899']
+                ],
+                zmin: -4,
+                zmax: 2,
+                showscale: true
+            };
+            
+            const layout3 = {
+                title: 'Precipitation Risk Heatmap (Saturation Index)',
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                font: { color: '#f8fafc', family: 'Space Grotesk' },
+                margin: { t: 40, b: 40, l: 120, r: 20 }
+            };
+            Plotly.newPlot('heatmap-plot', [trace3], layout3);
+        }
+
+        init();
+    </script>
+</body>
+</html>
