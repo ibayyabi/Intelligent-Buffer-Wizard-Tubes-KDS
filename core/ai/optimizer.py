@@ -2,6 +2,7 @@ import math
 from models.session import BufferFormulationInput, SaltInput
 from core.chemistry.buffer_engine import BufferEngine
 from core.chemistry.ksp_predictor import PrecipitationPredictor
+from core.chemistry.ion_pool import build_ion_pool_from_salts, add_buffer_species_to_ion_pool
 
 class ConstraintOptimizer:
     def __init__(self, buffer_engine: BufferEngine, precip_predictor: PrecipitationPredictor):
@@ -54,47 +55,8 @@ class ConstraintOptimizer:
                 res = self.engine.solve_formulation(test_input, target_volume_l)
                 
                 # Check precipitation risk
-                # Assemble ion pool
-                ion_pool = {}
-                for salt in test_input.added_salts:
-                    # simplistic ion mapper
-                    # We just use sodium, potassium, chloride, calcium, magnesium
-                    # plus buffer species
-                    pass
-                
-                # Setup basic ion pool
-                ion_pool = {}
-                # Map added salts
-                for s in test_input.added_salts:
-                    n = s.name.upper()
-                    c = s.concentration
-                    if n == "NACL":
-                        ion_pool["Na+"] = ion_pool.get("Na+", 0.0) + c
-                        ion_pool["Cl-"] = ion_pool.get("Cl-", 0.0) + c
-                    elif n == "KCL":
-                        ion_pool["K+"] = ion_pool.get("K+", 0.0) + c
-                        ion_pool["Cl-"] = ion_pool.get("Cl-", 0.0) + c
-                    elif n == "CACL2":
-                        ion_pool["Ca2+"] = ion_pool.get("Ca2+", 0.0) + c
-                        ion_pool["Cl-"] = ion_pool.get("Cl-", 0.0) + c * 2
-                    elif n == "MGCL2":
-                        ion_pool["Mg2+"] = ion_pool.get("Mg2+", 0.0) + c
-                        ion_pool["Cl-"] = ion_pool.get("Cl-", 0.0) + c * 2
-                        
-                # Map buffer ions
-                for spec in res.species_concentrations:
-                    # E.g. HPO42-, PO43-
-                    # Check if the species has a chemical name mapping to Ksp database
-                    spec_name = spec.name.split(" (")[0]
-                    # Simple ion mapping for Ksp check
-                    if "HPO4" in spec_name or "Hydrogen Phosphate" in spec_name:
-                        ion_pool["HPO42-"] = spec.concentration
-                    elif "PO4" in spec_name or "Trisodium Phosphate" in spec_name:
-                        ion_pool["PO43-"] = spec.concentration
-                    elif "CO3" in spec_name or "Carbonate" in spec_name:
-                        ion_pool["CO32-"] = spec.concentration
-                    elif "HCO3" in spec_name or "Bicarbonate" in spec_name:
-                        ion_pool["HCO3-"] = spec.concentration
+                ion_pool = build_ion_pool_from_salts(test_input.added_salts)
+                add_buffer_species_to_ion_pool(ion_pool, res.species_concentrations)
                         
                 precip_risks = self.precip_predictor.predict_all_risks(ion_pool, res.ionic_strength, 25.0)
                 max_si = max([r.saturation_index for r in precip_risks]) if precip_risks else -5.0
@@ -169,34 +131,8 @@ class ConstraintOptimizer:
             try:
                 res = self.engine.solve_formulation(test_input, 1.0)
                 
-                # Assemble ion pool
-                ion_pool = {}
-                for s in test_input.added_salts:
-                    n = s.name.upper()
-                    c = s.concentration
-                    if n == "NACL":
-                        ion_pool["Na+"] = ion_pool.get("Na+", 0.0) + c
-                        ion_pool["Cl-"] = ion_pool.get("Cl-", 0.0) + c
-                    elif n == "KCL":
-                        ion_pool["K+"] = ion_pool.get("K+", 0.0) + c
-                        ion_pool["Cl-"] = ion_pool.get("Cl-", 0.0) + c
-                    elif n == "CACL2":
-                        ion_pool["Ca2+"] = ion_pool.get("Ca2+", 0.0) + c
-                        ion_pool["Cl-"] = ion_pool.get("Cl-", 0.0) + c * 2
-                    elif n == "MGCL2":
-                        ion_pool["Mg2+"] = ion_pool.get("Mg2+", 0.0) + c
-                        ion_pool["Cl-"] = ion_pool.get("Cl-", 0.0) + c * 2
-                        
-                for spec in res.species_concentrations:
-                    spec_name = spec.name
-                    if "HPO4" in spec_name or "Hydrogen Phosphate" in spec_name:
-                        ion_pool["HPO42-"] = spec.concentration
-                    elif "PO4" in spec_name or "Trisodium Phosphate" in spec_name:
-                        ion_pool["PO43-"] = spec.concentration
-                    elif "CO3" in spec_name or "Carbonate" in spec_name:
-                        ion_pool["CO32-"] = spec.concentration
-                    elif "HCO3" in spec_name or "Bicarbonate" in spec_name:
-                        ion_pool["HCO3-"] = spec.concentration
+                ion_pool = build_ion_pool_from_salts(test_input.added_salts)
+                add_buffer_species_to_ion_pool(ion_pool, res.species_concentrations)
                         
                 precip_risks = self.precip_predictor.predict_all_risks(ion_pool, res.ionic_strength, 25.0)
                 max_si = max([r.saturation_index for r in precip_risks]) if precip_risks else -5.0

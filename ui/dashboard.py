@@ -13,6 +13,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from models.session import BufferFormulationInput, SaltInput, BufferFormulationResult
 from core.chemistry.buffer_engine import BufferEngine
 from core.chemistry.ksp_predictor import PrecipitationPredictor
+from core.chemistry.ion_pool import build_ion_pool_from_salts, add_buffer_species_to_ion_pool
 from core.expert.knowledge_base import KnowledgeBase
 from core.expert.rule_engine import RuleEngine
 from core.expert.conflict_resolver import ConflictResolver
@@ -71,37 +72,8 @@ def formulate_buffer(form_input: BufferFormulationInput):
         res = engine.solve_formulation(form_input, 1.0)
         
         # Build ion pool
-        ion_pool = {}
-        for salt in form_input.added_salts:
-            n = salt.name.upper()
-            c = salt.concentration
-            if n == "NACL":
-                ion_pool["Na+"] = ion_pool.get("Na+", 0.0) + c
-                ion_pool["Cl-"] = ion_pool.get("Cl-", 0.0) + c
-            elif n == "KCL":
-                ion_pool["K+"] = ion_pool.get("K+", 0.0) + c
-                ion_pool["Cl-"] = ion_pool.get("Cl-", 0.0) + c
-            elif n == "CACL2":
-                ion_pool["Ca2+"] = ion_pool.get("Ca2+", 0.0) + c
-                ion_pool["Cl-"] = ion_pool.get("Cl-", 0.0) + c * 2
-            elif n == "MGCL2":
-                ion_pool["Mg2+"] = ion_pool.get("Mg2+", 0.0) + c
-                ion_pool["Cl-"] = ion_pool.get("Cl-", 0.0) + c * 2
-            elif n == "MGSO4":
-                ion_pool["Mg2+"] = ion_pool.get("Mg2+", 0.0) + c
-                ion_pool["SO42-"] = ion_pool.get("SO42-", 0.0) + c
-                
-        # Inject buffer species
-        for spec in res.species_concentrations:
-            spec_name = spec.name
-            if "HPO4" in spec_name or "Hydrogen Phosphate" in spec_name:
-                ion_pool["HPO42-"] = spec.concentration
-            elif "PO4" in spec_name or "Trisodium Phosphate" in spec_name:
-                ion_pool["PO43-"] = spec.concentration
-            elif "CO3" in spec_name or "Carbonate" in spec_name:
-                ion_pool["CO32-"] = spec.concentration
-            elif "HCO3" in spec_name or "Bicarbonate" in spec_name:
-                ion_pool["HCO3-"] = spec.concentration
+        ion_pool = build_ion_pool_from_salts(form_input.added_salts)
+        add_buffer_species_to_ion_pool(ion_pool, res.species_concentrations)
                 
         # Ksp Precipitation calculations
         res.precipitation_risks = ksp_predictor.predict_all_risks(ion_pool, res.ionic_strength, form_input.temperature_c)
