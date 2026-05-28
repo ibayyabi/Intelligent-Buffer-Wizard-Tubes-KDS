@@ -1,4 +1,3 @@
-import math
 from models.session import BufferFormulationInput, SaltInput
 from core.chemistry.buffer_engine import BufferEngine
 from core.chemistry.ksp_predictor import PrecipitationPredictor
@@ -65,13 +64,11 @@ class ConstraintOptimizer:
                 toxicity, cost = self.buffer_metrics.get(name, (2.0, 3.0))
                 
                 # Score components (lower score is better suitability)
-                # 1. Capacity score: distance of pH from closest apparent pKa
-                pKa_diffs = [abs(target_ph - pKa) for pKa in res.activity_coefficients.get(0, 1.0) * 0.0 + res.buffer_capacity * 0.0 + 1.0] # Dummy lookup
-                # Let's find closest thermodynamic pKa
                 closest_pKa = min(buffer_data["pKa"], key=lambda x: abs(target_ph - x))
                 ph_dist = abs(target_ph - closest_pKa)
                 
-                capacity_penalty = ph_dist * 20.0
+                ph_penalty = ph_dist * 20.0
+                capacity_bonus = min(res.buffer_capacity * 250.0, 15.0)
                 toxicity_penalty = (toxicity - 1.0) * 15.0
                 cost_penalty = (cost - 1.0) * 5.0
                 
@@ -80,8 +77,8 @@ class ConstraintOptimizer:
                 if -0.2 <= max_si < 0.0:
                     precip_penalty = 30.0
                     
-                suitability_score = 100.0 - (capacity_penalty + toxicity_penalty + cost_penalty + precip_penalty)
-                suitability_score = max(0.0, suitability_score)
+                suitability_score = 100.0 + capacity_bonus - (ph_penalty + toxicity_penalty + cost_penalty + precip_penalty)
+                suitability_score = min(100.0, max(0.0, suitability_score))
                 
                 results.append({
                     "name": name,
