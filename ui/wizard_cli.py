@@ -4,6 +4,7 @@ import sys
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
+from rich import box
 from rich.text import Text
 from rich.prompt import Prompt, Confirm, FloatPrompt, IntPrompt
 
@@ -22,6 +23,16 @@ from core.ai.optimizer import ConstraintOptimizer
 from ui.reporter import HTMLReporter
 
 console = Console()
+
+
+def build_header_panel() -> Panel:
+    return Panel(
+        Text("🔮 Intelligent Buffer Wizard 🔮\nExpert Chemistry Solution Designer", justify="center", style="bold white"),
+        box=box.DOUBLE,
+        border_style="blue",
+        expand=False,
+    )
+
 
 class WizardCLI:
     def __init__(self):
@@ -54,11 +65,7 @@ class WizardCLI:
 
     def run(self):
         console.clear()
-        console.print(Panel(
-            Text("🔮 Intelligent Buffer Wizard 🔮\nExpert Chemistry Solution Designer", justify="center", style="bold white"),
-            style="double blue",
-            expand=False
-        ))
+        console.print(build_header_panel())
         
         # 1. Main Action Selection
         action = Prompt.ask(
