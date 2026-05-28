@@ -6,6 +6,24 @@ class PrecipitationPredictor:
     def __init__(self, ksp_database: list[dict]):
         self.ksp_database = ksp_database
 
+    def _resolve_ion_concentration(self, ion_name: str, ion_pool: dict[str, float]) -> float:
+        conc = ion_pool.get(ion_name, 0.0)
+        if conc > 0.0:
+            return conc
+
+        if ion_name != "OH-":
+            return 0.0
+
+        if ion_pool.get("pH", 0.0) > 0.0:
+            h_concentration = 10 ** (-ion_pool["pH"])
+            return 1e-14 / h_concentration
+
+        h_concentration = ion_pool.get("H+", 0.0)
+        if h_concentration > 0.0:
+            return 1e-14 / h_concentration
+
+        return 0.0
+
     def predict_all_risks(
         self, 
         ion_pool: dict[str, float], 
@@ -44,16 +62,8 @@ class PrecipitationPredictor:
                 charge = ion["charge"]
                 stoich = ion["stoich"]
                 
-                # Retrieve concentration of this ion
-                conc = ion_pool.get(ion_name, 0.0)
-                
-                # Special cases:
-                # If we need OH- but it's not explicitly in ion_pool, we can estimate from water ionization
-                if ion_name == "OH-" and conc == 0.0:
-                    # Estimate pH if H+ is in pool, or use OH- if H+ is available
-                    # Actually, we can get pH from the system state and calculate OH-
-                    # Assume pH is available or OH- concentration has been pre-injected into the pool
-                    pass
+                # Retrieve concentration of this ion, including explicit OH- inference from pH or H+.
+                conc = self._resolve_ion_concentration(ion_name, ion_pool)
                 
                 if conc <= 0.0:
                     all_present = False
