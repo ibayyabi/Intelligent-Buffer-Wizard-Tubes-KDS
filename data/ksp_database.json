@@ -46,12 +46,39 @@
       ]
     },
     {
+      "name": "Calcium Fluoride",
+      "formula": "CaF2",
+      "ksp": 3.45e-11,
+      "ions": [
+        {"name": "Ca2+", "charge": 2, "stoich": 1},
+        {"name": "F-", "charge": -1, "stoich": 2}
+      ]
+    },
+    {
+      "name": "Calcium Oxalate",
+      "formula": "CaC2O4",
+      "ksp": 2.32e-9,
+      "ions": [
+        {"name": "Ca2+", "charge": 2, "stoich": 1},
+        {"name": "C2O42-", "charge": -2, "stoich": 1}
+      ]
+    },
+    {
       "name": "Magnesium Phosphate",
       "formula": "Mg3(PO4)2",
       "ksp": 1.04e-24,
       "ions": [
         {"name": "Mg2+", "charge": 2, "stoich": 3},
         {"name": "PO43-", "charge": -3, "stoich": 2}
+      ]
+    },
+    {
+      "name": "Magnesium Hydrogen Phosphate",
+      "formula": "MgHPO4",
+      "ksp": 2.5e-6,
+      "ions": [
+        {"name": "Mg2+", "charge": 2, "stoich": 1},
+        {"name": "HPO42-", "charge": -2, "stoich": 1}
       ]
     },
     {
@@ -70,6 +97,15 @@
       "ions": [
         {"name": "Mg2+", "charge": 2, "stoich": 1},
         {"name": "OH-", "charge": -1, "stoich": 2}
+      ]
+    },
+    {
+      "name": "Magnesium Fluoride",
+      "formula": "MgF2",
+      "ksp": 6.4e-9,
+      "ions": [
+        {"name": "Mg2+", "charge": 2, "stoich": 1},
+        {"name": "F-", "charge": -1, "stoich": 2}
       ]
     },
     {
@@ -101,12 +137,102 @@
       ]
     },
     {
+      "name": "Barium Fluoride",
+      "formula": "BaF2",
+      "ksp": 1.84e-7,
+      "ions": [
+        {"name": "Ba2+", "charge": 2, "stoich": 1},
+        {"name": "F-", "charge": -1, "stoich": 2}
+      ]
+    },
+    {
+      "name": "Strontium Sulfate",
+      "formula": "SrSO4",
+      "ksp": 3.44e-7,
+      "ions": [
+        {"name": "Sr2+", "charge": 2, "stoich": 1},
+        {"name": "SO42-", "charge": -2, "stoich": 1}
+      ]
+    },
+    {
+      "name": "Strontium Carbonate",
+      "formula": "SrCO3",
+      "ksp": 5.6e-10,
+      "ions": [
+        {"name": "Sr2+", "charge": 2, "stoich": 1},
+        {"name": "CO32-", "charge": -2, "stoich": 1}
+      ]
+    },
+    {
       "name": "Silver Chloride",
       "formula": "AgCl",
       "ksp": 1.77e-10,
       "ions": [
         {"name": "Ag+", "charge": 1, "stoich": 1},
         {"name": "Cl-", "charge": -1, "stoich": 1}
+      ]
+    },
+    {
+      "name": "Silver Bromide",
+      "formula": "AgBr",
+      "ksp": 5.35e-13,
+      "ions": [
+        {"name": "Ag+", "charge": 1, "stoich": 1},
+        {"name": "Br-", "charge": -1, "stoich": 1}
+      ]
+    },
+    {
+      "name": "Silver Iodide",
+      "formula": "AgI",
+      "ksp": 8.3e-17,
+      "ions": [
+        {"name": "Ag+", "charge": 1, "stoich": 1},
+        {"name": "I-", "charge": -1, "stoich": 1}
+      ]
+    },
+    {
+      "name": "Silver Phosphate",
+      "formula": "Ag3PO4",
+      "ksp": 8.89e-17,
+      "ions": [
+        {"name": "Ag+", "charge": 1, "stoich": 3},
+        {"name": "PO43-", "charge": -3, "stoich": 1}
+      ]
+    },
+    {
+      "name": "Lead Chloride",
+      "formula": "PbCl2",
+      "ksp": 1.7e-5,
+      "ions": [
+        {"name": "Pb2+", "charge": 2, "stoich": 1},
+        {"name": "Cl-", "charge": -1, "stoich": 2}
+      ]
+    },
+    {
+      "name": "Lead Sulfate",
+      "formula": "PbSO4",
+      "ksp": 1.6e-8,
+      "ions": [
+        {"name": "Pb2+", "charge": 2, "stoich": 1},
+        {"name": "SO42-", "charge": -2, "stoich": 1}
+      ]
+    },
+    {
+      "name": "Lead Carbonate",
+      "formula": "PbCO3",
+      "ksp": 7.4e-14,
+      "ions": [
+        {"name": "Pb2+", "charge": 2, "stoich": 1},
+        {"name": "CO32-", "charge": -2, "stoich": 1}
+      ]
+    },
+    {
+      "name": "Lead Iodide",
+      "formula": "PbI2",
+      "ksp": 9.8e-9,
+      "ions": [
+        {"name": "Pb2+", "charge": 2, "stoich": 1},
+        {"name": "I-", "charge": -1, "stoich": 2}
       ]
     },
     {
@@ -125,6 +251,33 @@
       "ions": [
         {"name": "Zn2+", "charge": 2, "stoich": 3},
         {"name": "PO43-", "charge": -3, "stoich": 2}
+      ]
+    },
+    {
+      "name": "Zinc Sulfide",
+      "formula": "ZnS",
+      "ksp": 2.0e-25,
+      "ions": [
+        {"name": "Zn2+", "charge": 2, "stoich": 1},
+        {"name": "S2-", "charge": -2, "stoich": 1}
+      ]
+    },
+    {
+      "name": "Copper(II) Hydroxide",
+      "formula": "Cu(OH)2",
+      "ksp": 2.2e-20,
+      "ions": [
+        {"name": "Cu2+", "charge": 2, "stoich": 1},
+        {"name": "OH-", "charge": -1, "stoich": 2}
+      ]
+    },
+    {
+      "name": "Copper(II) Sulfide",
+      "formula": "CuS",
+      "ksp": 6.0e-37,
+      "ions": [
+        {"name": "Cu2+", "charge": 2, "stoich": 1},
+        {"name": "S2-", "charge": -2, "stoich": 1}
       ]
     },
     {
@@ -152,6 +305,51 @@
       "ions": [
         {"name": "Fe3+", "charge": 3, "stoich": 1},
         {"name": "PO43-", "charge": -3, "stoich": 1}
+      ]
+    },
+    {
+      "name": "Aluminum Hydroxide",
+      "formula": "Al(OH)3",
+      "ksp": 3.0e-34,
+      "ions": [
+        {"name": "Al3+", "charge": 3, "stoich": 1},
+        {"name": "OH-", "charge": -1, "stoich": 3}
+      ]
+    },
+    {
+      "name": "Aluminum Phosphate",
+      "formula": "AlPO4",
+      "ksp": 9.84e-21,
+      "ions": [
+        {"name": "Al3+", "charge": 3, "stoich": 1},
+        {"name": "PO43-", "charge": -3, "stoich": 1}
+      ]
+    },
+    {
+      "name": "Manganese(II) Hydroxide",
+      "formula": "Mn(OH)2",
+      "ksp": 1.9e-13,
+      "ions": [
+        {"name": "Mn2+", "charge": 2, "stoich": 1},
+        {"name": "OH-", "charge": -1, "stoich": 2}
+      ]
+    },
+    {
+      "name": "Nickel(II) Hydroxide",
+      "formula": "Ni(OH)2",
+      "ksp": 5.48e-16,
+      "ions": [
+        {"name": "Ni2+", "charge": 2, "stoich": 1},
+        {"name": "OH-", "charge": -1, "stoich": 2}
+      ]
+    },
+    {
+      "name": "Cobalt(II) Hydroxide",
+      "formula": "Co(OH)2",
+      "ksp": 1.6e-15,
+      "ions": [
+        {"name": "Co2+", "charge": 2, "stoich": 1},
+        {"name": "OH-", "charge": -1, "stoich": 2}
       ]
     }
   ]
