@@ -301,6 +301,7 @@ select:focus, input:focus {
 }
 
 .tab-btn {
+    position: relative;
     background: transparent;
     border: 1px solid transparent;
     color: var(--text-secondary);
@@ -315,13 +316,28 @@ select:focus, input:focus {
 
 .tab-btn:hover {
     color: #ffffff;
-    background: rgba(255,255,255,0.02);
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.08);
 }
 
 .tab-btn.active {
-    background: rgba(217, 146, 94, 0.08);
-    color: var(--accent-copper);
-    border-color: rgba(217, 146, 94, 0.15);
+    background: linear-gradient(135deg, rgba(217, 146, 94, 0.22), rgba(217, 146, 94, 0.08));
+    color: #ffffff;
+    border-color: rgba(217, 146, 94, 0.55);
+    box-shadow: 0 0 0 1px rgba(217, 146, 94, 0.12), 0 10px 26px rgba(217, 146, 94, 0.18);
+    transform: translateY(-1px);
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: -17px;
+    height: 3px;
+    border-radius: 999px;
+    background: var(--accent-copper);
+    box-shadow: 0 0 12px var(--accent-copper);
 }
 
 .tab-pane {

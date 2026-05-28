@@ -92,11 +92,11 @@
         <!-- Main Output Deck -->
         <div class="panel">
             <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('recipe')">📋 Preparation Protocols</button>
-                <button class="tab-btn" onclick="switchTab('chemistry')">🧪 Chemical Speciation</button>
-                <button class="tab-btn" onclick="switchTab('charts')">📊 Simulation Plots</button>
-                <button class="tab-btn" onclick="switchTab('safety')">⚠️ Expert Diagnostics</button>
-                <button class="tab-btn" onclick="switchTab('recommendations')">🤖 AI Media Similarity</button>
+                <button class="tab-btn active" data-tab="recipe" onclick="switchTab('recipe')">📋 Preparation Protocols</button>
+                <button class="tab-btn" data-tab="chemistry" onclick="switchTab('chemistry')">🧪 Chemical Speciation</button>
+                <button class="tab-btn" data-tab="charts" onclick="switchTab('charts')">📊 Simulation Plots</button>
+                <button class="tab-btn" data-tab="safety" onclick="switchTab('safety')">⚠️ Expert Diagnostics</button>
+                <button class="tab-btn" data-tab="recommendations" onclick="switchTab('recommendations')">🤖 AI Media Similarity</button>
             </div>
 
             <!-- Quick Summary Metrics Bar -->
@@ -272,10 +272,7 @@
             const panes = document.querySelectorAll(".tab-pane");
             
             tabs.forEach(btn => {
-                btn.classList.remove("active");
-                if (btn.innerText.toLowerCase().includes(tabId)) {
-                    btn.classList.add("active");
-                }
+                btn.classList.toggle("active", btn.dataset.tab === tabId);
             });
             
             panes.forEach(pane => {
