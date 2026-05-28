@@ -264,10 +264,10 @@ class BufferEngine:
             mass_naoh = moles_needed * 39.997
             vol_naoh_1m = moles_needed * 1000.0  # mL of 1M NaOH
             recipe_text = (
-                f"1. Dissolve {mass_start:.4f} g of {start_salt_name} (MW: {start_salt_mw:.2f}) in ~80% of the target volume of deionized water ({target_volume_l*0.8:.2f} L).\n"
-                f"2. Add approximately {vol_naoh_1m:.2f} mL of 1.0 M NaOH (or {mass_naoh:.4f} g of solid NaOH) to adjust the pH to {target_ph:.2f}.\n"
-                f"3. Add all other specified salts (NaCl, CaCl2, etc.) and stir until dissolved.\n"
-                f"4. Add deionized water to bring the final volume to {target_volume_l:.2f} L. Re-verify the pH."
+                f"1. Larutkan {mass_start:.4f} g {start_salt_name} (BM: {start_salt_mw:.2f}) dalam ~80% dari volume target air deionisasi ({target_volume_l*0.8:.2f} L).\n"
+                f"2. Tambahkan sekitar {vol_naoh_1m:.2f} mL NaOH 1,0 M (atau {mass_naoh:.4f} g NaOH padat) untuk menyesuaikan pH ke {target_ph:.2f}.\n"
+                f"3. Tambahkan semua garam lain yang ditentukan (NaCl, CaCl2, dll.) lalu aduk hingga larut.\n"
+                f"4. Tambahkan air deionisasi hingga volume akhir {target_volume_l:.2f} L. Verifikasi ulang pH."
             )
         elif delta_Q > 1e-5:
             # We need to add acid (HCl)
@@ -277,16 +277,16 @@ class BufferEngine:
             # Assume 1M HCl stock
             vol_hcl_1m = moles_needed * 1000.0
             recipe_text = (
-                f"1. Dissolve {mass_start:.4f} g of {start_salt_name} (MW: {start_salt_mw:.2f}) in ~80% of the target volume of deionized water ({target_volume_l*0.8:.2f} L).\n"
-                f"2. Add approximately {vol_hcl_1m:.2f} mL of 1.0 M HCl to adjust the pH to {target_ph:.2f}.\n"
-                f"3. Add all other specified salts (NaCl, CaCl2, etc.) and stir until dissolved.\n"
-                f"4. Add deionized water to bring the final volume to {target_volume_l:.2f} L. Re-verify the pH."
+                f"1. Larutkan {mass_start:.4f} g {start_salt_name} (BM: {start_salt_mw:.2f}) dalam ~80% dari volume target air deionisasi ({target_volume_l*0.8:.2f} L).\n"
+                f"2. Tambahkan sekitar {vol_hcl_1m:.2f} mL HCl 1,0 M untuk menyesuaikan pH ke {target_ph:.2f}.\n"
+                f"3. Tambahkan semua garam lain yang ditentukan (NaCl, CaCl2, dll.) lalu aduk hingga larut.\n"
+                f"4. Tambahkan air deionisasi hingga volume akhir {target_volume_l:.2f} L. Verifikasi ulang pH."
             )
         else:
             recipe_text = (
-                f"1. Dissolve {mass_start:.4f} g of {start_salt_name} (MW: {start_salt_mw:.2f}) in ~95% of the target volume of deionized water.\n"
-                f"2. Add all other specified salts and stir until dissolved.\n"
-                f"3. pH is already at the target of {target_ph:.2f}. Add water to bring the final volume to {target_volume_l:.2f} L."
+                f"1. Larutkan {mass_start:.4f} g {start_salt_name} (BM: {start_salt_mw:.2f}) dalam ~95% dari volume target air deionisasi.\n"
+                f"2. Tambahkan semua garam lain yang ditentukan lalu aduk hingga larut.\n"
+                f"3. pH sudah berada pada target {target_ph:.2f}. Tambahkan air hingga volume akhir {target_volume_l:.2f} L."
             )
             
         titrant = TitrantRequirement(
@@ -342,10 +342,10 @@ class BufferEngine:
                         label_b = f"{vol_b:.4f} mL"
                         
                     direct_recipe_text = (
-                        f"1. Measure {label_a} of {name_a} and {label_b} of {name_b}.\n"
-                        f"2. Dissolve both in ~90% of the target volume of deionized water ({target_volume_l*0.9:.2f} L).\n"
-                        f"3. Add all other specified salts (NaCl, CaCl2, etc.) and stir until dissolved.\n"
-                        f"4. Add deionized water to bring the final volume to {target_volume_l:.2f} L. Verify pH is {target_ph:.2f}."
+                        f"1. Timbang/ukur {label_a} {name_a} dan {label_b} {name_b}.\n"
+                        f"2. Larutkan keduanya dalam ~90% dari volume target air deionisasi ({target_volume_l*0.9:.2f} L).\n"
+                        f"3. Tambahkan semua garam lain yang ditentukan (NaCl, CaCl2, dll.) lalu aduk hingga larut.\n"
+                        f"4. Tambahkan air deionisasi hingga volume akhir {target_volume_l:.2f} L. Verifikasi pH berada pada {target_ph:.2f}."
                     )
                     
                     direct_recipe = DirectMixRecipe(
