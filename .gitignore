@@ -205,6 +205,10 @@ cython_debug/
 # Temporary file for partial code execution
 tempCodeRunnerFile.py
 
+# Agent worktrees
+.worktrees/
+worktrees/
+
 # Ruff stuff:
 .ruff_cache/
 
