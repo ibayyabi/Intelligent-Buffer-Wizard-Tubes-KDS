@@ -2,9 +2,6 @@ import os
 from models.session import BufferFormulationResult
 
 class HTMLReporter:
-    def __init__(self):
-        pass
-
     def generate_report(self, result: BufferFormulationResult, output_path: str):
         """
         Generates a premium, self-contained HTML report for the buffer formulation,
@@ -468,6 +465,7 @@ class HTMLReporter:
 </body>
 </html>
 """
+        os.makedirs(os.path.dirname(os.path.abspath(output_path)), exist_ok=True)
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(html_content)
         print(f"HTML report successfully written to: {output_path}")
