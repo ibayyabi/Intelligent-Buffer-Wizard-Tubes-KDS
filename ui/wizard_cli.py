@@ -63,6 +63,13 @@ class WizardCLI:
         self.recommender = FormulationRecommender(self.templates_data)
         self.optimizer = ConstraintOptimizer(self.engine, self.ksp_predictor)
 
+    def _ask_int_in_range(self, prompt_text: str, min_value: int, max_value: int) -> int:
+        while True:
+            value = IntPrompt.ask(prompt_text)
+            if min_value <= value <= max_value:
+                return value
+            console.print(f"[bold yellow]Input harus antara {min_value} sampai {max_value}.[/bold yellow]")
+
     def run(self):
         console.clear()
         console.print(build_header_panel())
@@ -99,7 +106,11 @@ class WizardCLI:
             
         console.print(table)
         
-        t_choice = IntPrompt.ask("Enter template number to view details", min=1, max=len(self.templates_data))
+        t_choice = self._ask_int_in_range(
+            "Enter template number to view details",
+            1,
+            len(self.templates_data),
+        )
         selected_template = self.templates_data[t_choice - 1]
         
         # Formulate based on template
@@ -186,7 +197,11 @@ class WizardCLI:
         for idx, b in enumerate(self.catalog_data):
             console.print(f"  {idx+1}. [bold cyan]{b['name']}[/bold cyan] (pH range: {b['range'][0]} - {b['range'][1]})")
             
-        buf_idx = IntPrompt.ask("\nSelect buffer system (number)", min=1, max=len(self.catalog_data))
+        buf_idx = self._ask_int_in_range(
+            "\nSelect buffer system (number)",
+            1,
+            len(self.catalog_data),
+        )
         selected_buffer = self.catalog_data[buf_idx - 1]
         buffer_name = selected_buffer["name"]
         
